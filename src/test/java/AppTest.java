@@ -1,3 +1,4 @@
+import junit.framework.Assert;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

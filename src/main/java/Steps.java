@@ -1,21 +1,13 @@
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.*;
 
-import static java.lang.String.format;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.time.Instant;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 
@@ -35,14 +27,11 @@ public class Steps {
             while (observationFieldsIterator.hasNext()) {
                 Map.Entry<String, JsonNode> observationField = observationFieldsIterator.next();
                 String observationDate = observationField.getKey();
-
-
                 String valueForObservationDate = observationField.getValue().asText();
-
-                ResponseFieldsGeneral responseEndpointOne =  new ResponseFieldsGeneral(dateOfRequest, observationDate, valueForObservationDate);
-
-                if (!responseEndpointOne.getValueForObservationDate().equals("null") ) {responseFieldsGenerals.add(responseEndpointOne);}
-
+                ResponseFieldsGeneral responseGeneratedObject = new ResponseFieldsGeneral(dateOfRequest, observationDate, valueForObservationDate);
+                if (!responseGeneratedObject.getValueForObservationDate().equals("null")) {
+                    responseFieldsGenerals.add(responseGeneratedObject);
+                }
             }
         }
         return responseFieldsGenerals;
@@ -88,24 +77,3 @@ public class Steps {
         return new ResponseFieldsGeneral(dateOfRequest, observationDate, valueForObservationDate);
     }
 }
-
-
-//    public static List<ResponseFieldsGeneral> readMultipleCSVFiles(String[] fileNames) throws IOException {
-//        List<ResponseFieldsGeneral> pojos = new ArrayList<>();
-//        for (String fileName : fileNames) {
-//            try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-//                String line;
-//                while ((line = br.readLine()) != null) {
-//                    String[] values = line.split(",");
-//                    ResponseFieldsGeneral pojo = new ResponseFieldsGeneral();
-//                    pojo.setName(values[0]);
-//                    pojo.setMobile(Integer.parseInt(values[1]));
-//                    // set other fields here
-//                    pojos.add(pojo);
-//                }
-//            }
-//        }
-//        return pojos;
-//    }
-
-

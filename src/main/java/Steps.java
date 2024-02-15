@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 
 public class Steps {
@@ -37,7 +38,6 @@ public class Steps {
         return responseFieldsGenerals;
     }
 
-
     public static List<ResponseFieldsGeneral> getDataFromCSV(String file) {
         List<ResponseFieldsGeneral> responseList = new ArrayList<>();
         Path pathToFile = Paths.get(file);
@@ -54,6 +54,31 @@ public class Steps {
         }
 
         return responseList;
+    }
+
+    static void validateFolder(File folder) {
+        Objects.requireNonNull(folder, "Folder must not be null.");
+        if (!folder.exists() || !folder.isDirectory()) {
+            throw new IllegalArgumentException("Invalid folder path: " + folder.getPath());
+        }
+    }
+
+    static List<File> getCsvFiles(File folder) {
+        List<File> csvFiles = new ArrayList<>();
+        File[] files = folder.listFiles((dir, name) -> name.endsWith(".csv"));
+        if (files != null) {
+            csvFiles.addAll(Arrays.asList(files));
+        }
+        return csvFiles;
+    }
+
+    static List<File> getJsonFiles(File folder) {
+        List<File> jsonFiles = new ArrayList<>();
+        File[] files = folder.listFiles((dir, name) -> name.endsWith(".json"));
+        if (files != null) {
+            jsonFiles.addAll(Arrays.asList(files));
+        }
+        return jsonFiles;
     }
 
     private static ResponseFieldsGeneral getOneData(String[] attributes) {
